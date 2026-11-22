@@ -25,9 +25,14 @@ export default function Hero() {
           <a className="btn" href="#connect">
             Подключить модуль →
           </a>
-          <button className="btn" onClick={() => window.print()}>
-            PDF / печать
-          </button>
+          <a
+            className="btn"
+            href={`${import.meta.env.BASE_URL}cv/Yaroslav-Kukar-CBT.pdf`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            PDF
+          </a>
         </div>
       </div>
 
