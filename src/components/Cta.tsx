@@ -3,18 +3,20 @@ import { candidate } from '../data/candidate'
 import { skills } from '../data/skills'
 import './cta.css'
 
-const SUBJECT = encodeURIComponent('Отклик: инженер-программист — модуль «инженер-программист» подключён')
-const HR_MAIL = 'HR@cbt.by'
+const SUBJECT = encodeURIComponent('Заявка REQ-2026-0001 — вакансия «Инженер-программист» (cbt.by)')
+const CANDIDATE_MAIL = candidate.contacts.email
 
 function ContactButton({
   label,
   value,
   href,
+  openLabel = 'открыть ↗',
   onCopy,
 }: {
   label: string
   value: string
   href: string
+  openLabel?: string
   onCopy: (text: string) => void
 }) {
   return (
@@ -24,8 +26,13 @@ function ContactButton({
         <span className="cta__contact-value">{value}</span>
       </div>
       <div className="cta__contact-actions">
-        <a className="btn" href={href} target={href.startsWith('mailto') ? undefined : '_blank'} rel="noreferrer">
-          открыть ↗
+        <a
+          className="btn"
+          href={href}
+          target={href.startsWith('http') ? '_blank' : undefined}
+          rel="noreferrer"
+        >
+          {openLabel}
         </a>
         <button className="btn" onClick={() => onCopy(value)}>
           копировать
@@ -79,18 +86,16 @@ export default function Cta() {
 
         <a
           className="btn btn--primary cta__apply"
-          href={`mailto:${HR_MAIL}?subject=${SUBJECT}&body=${encodeURIComponent(
-            `Здравствуйте!\n\nПишу по вакансии «Инженер-программист» (cbt.by/career).\nИнтерактивное резюме: https://kerarty.github.io/cv-cbt/\nGitHub: ${candidate.contacts.github}\n\nС уважением,\n${candidate.lastName} ${candidate.firstName}`,
-          )}`}
+          href={`mailto:${CANDIDATE_MAIL}?subject=${SUBJECT}`}
         >
-          Откликнуться в HR ({HR_MAIL.toLowerCase()})
+          Написать кандидату ({CANDIDATE_MAIL})
         </a>
         <p className="cta__note">
           Вакансия «Инженер-программист» ·{' '}
           <a href="https://www.cbt.by/career/" target="_blank" rel="noreferrer">
             cbt.by/career
           </a>{' '}
-          · отклик продублирует письмо HR со ссылкой на живое резюме
+          · письмо откроется с готовой темой — останется дописать пару строк
         </p>
       </div>
 
@@ -99,6 +104,13 @@ export default function Cta() {
           label="EMAIL"
           value={candidate.contacts.email}
           href={`mailto:${candidate.contacts.email}`}
+          onCopy={copy}
+        />
+        <ContactButton
+          label="ТЕЛЕФОН"
+          value={candidate.contacts.phone}
+          href={`tel:${candidate.contacts.phoneRaw}`}
+          openLabel="набрать ↗"
           onCopy={copy}
         />
         <ContactButton

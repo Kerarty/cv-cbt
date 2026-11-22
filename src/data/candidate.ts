@@ -24,6 +24,9 @@ export const candidate = {
     github: 'https://github.com/Kerarty',
     email: 'kukar.yar@gmail.com',
     telegram: 'https://t.me/Kerarty',
+    /** Телефон: display — для показа, raw — для tel:-ссылки и копирования */
+    phone: '+375 44 783-84-89',
+    phoneRaw: '+375447838489',
   },
 
   summary: [
