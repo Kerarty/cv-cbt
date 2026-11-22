@@ -24,6 +24,9 @@ export default function Hero() {
           <a className="btn" href="#connect">
             Подключить модуль →
           </a>
+          <button className="btn" onClick={() => window.print()}>
+            PDF / печать
+          </button>
         </div>
       </div>
 

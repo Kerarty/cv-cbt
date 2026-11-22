@@ -1,0 +1,124 @@
+/* Print/PDF-режим: статичная светлая версия всех разделов для HR.
+   Токены переопределяются на светлые — весь интерфейс перекрашивается сам. */
+
+@media print {
+  :root {
+    color-scheme: light;
+    --bg-0: #ffffff;
+    --bg-1: #ffffff;
+    --bg-2: #f4f6fa;
+    --bg-3: #e9edf4;
+    --stroke-1: #c9d2e0;
+    --stroke-2: #9aa8bd;
+    --text-1: #101828;
+    --text-2: #344054;
+    --text-3: #667085;
+    --accent: #1e4fd6;
+    --accent-dim: #1e4fd6;
+    --accent-glow: rgba(30, 79, 214, 0.12);
+    --amber: #8a5a00;
+    --amber-glow: rgba(138, 90, 0, 0.1);
+    --green: #067647;
+    --red: #b42318;
+    --cyan: #0b6f9e;
+  }
+
+  @page {
+    margin: 12mm;
+  }
+
+  body {
+    background: #fff;
+    color: var(--text-1);
+    font-size: 12.5px;
+  }
+
+  body::before,
+  body::after {
+    display: none;
+  }
+
+  /* Интерактивные элементы не печатаем */
+  .npanel,
+  .hcheck,
+  .hero__actions,
+  .cta__contact-actions,
+  .hcheck__cta {
+    display: none !important;
+  }
+
+  .statusbar {
+    position: static;
+    background: #fff;
+    border-color: var(--stroke-1);
+  }
+
+  .btn {
+    border-color: var(--stroke-2);
+    background: var(--bg-2);
+    color: var(--text-1);
+  }
+
+  .btn--primary {
+    background: var(--accent) !important;
+    color: #fff !important;
+  }
+
+  /* На печати всё статично: без затемнений и подсветок */
+  .map-node.is-dim,
+  .map-edge.is-dim,
+  .map-edge {
+    opacity: 1 !important;
+  }
+
+  .map-node.is-active .map-node__body {
+    filter: none;
+    stroke-width: 1.6;
+  }
+
+  .map-node__body {
+    fill: #fff;
+    stroke: var(--stroke-2);
+  }
+
+  .map-node--candidate .map-node__body {
+    fill: #fffdf5;
+    stroke: var(--amber);
+  }
+
+  /* Не разрывать карточки между страницами */
+  .card,
+  .reg__card,
+  .smatrix__row,
+  .oplog__entry,
+  .cta__contact,
+  .hero__card,
+  .hcheck {
+    break-inside: avoid;
+  }
+
+  .section {
+    padding-top: 24px;
+  }
+
+  .form-header {
+    border-color: var(--stroke-1);
+  }
+
+  .footer {
+    border-color: var(--stroke-1);
+    margin-top: 28px;
+  }
+
+  a {
+    color: var(--cyan);
+  }
+
+  /* Ссылки в печати: показываем адрес после текста */
+  .reg__link::after,
+  .npanel__projects a::after {
+    content: ' (' attr(href) ')';
+    font-size: 10px;
+    color: var(--text-3);
+  }
+}
