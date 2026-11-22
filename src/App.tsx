@@ -4,13 +4,17 @@ import Hero from './components/Hero'
 import Section from './components/Section'
 import SystemMap from './components/SystemMap'
 import NodePanel from './components/NodePanel'
+import SkillMatrix from './components/SkillMatrix'
+import Registry from './components/Registry'
 import type { ServiceId } from './data/services'
 import type { SkillId } from './data/skills'
+import type { ProjectId } from './data/projects'
 import { candidate } from './data/candidate'
 
 function App() {
   const [activeNode, setActiveNode] = useState<ServiceId | null>(null)
   const [hoveredSkill, setHoveredSkill] = useState<SkillId | null>(null)
+  const [hoveredProject, setHoveredProject] = useState<ProjectId | null>(null)
 
   return (
     <>
@@ -26,25 +30,30 @@ function App() {
           title="Конфигурация системы"
           hint="Клик по узлу — зона ответственности и чем её закрывает кандидат. Пунктирный узел внизу — незадействованный модуль."
         >
-          <SystemMap activeNode={activeNode} onActivate={setActiveNode} hoveredSkill={hoveredSkill} />
+          <SystemMap
+            activeNode={activeNode}
+            onActivate={setActiveNode}
+            hoveredSkill={hoveredSkill}
+            hoveredProject={hoveredProject}
+          />
         </Section>
 
         <Section
           id="skills"
           no="02"
           title="Матрица соответствия"
-          hint="Требование вакансии → честный уровень → доказательство. Наведите на навык — узлы карты подсветятся."
+          hint="Требование вакансии → честный уровень → доказательство. Наведите на строку — узлы карты подсветятся."
         >
-          <div className="placeholder">[ ЭТАП 06 ] МАТРИЦА НАВЫКОВ — В РАЗРАБОТКЕ</div>
+          <SkillMatrix onHoverSkill={setHoveredSkill} />
         </Section>
 
         <Section
           id="registry"
           no="03"
           title="Реестр модулей"
-          hint="Личные проекты как модули системы: стек, архитектурные решения, автотесты. Только публично проверяемое — без приписок."
+          hint="Личные проекты как модули системы: стек, архитектурные решения, автотесты. Только публично проверяемое — без приписок. Наведите на карточку — увидите её место на карте."
         >
-          <div className="placeholder">[ ЭТАП 06 ] РЕЕСТР ПРОЕКТОВ — В РАЗРАБОТКЕ</div>
+          <Registry onHoverProject={setHoveredProject} />
         </Section>
 
         <Section

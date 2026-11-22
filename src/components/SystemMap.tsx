@@ -1,5 +1,6 @@
 import { services, candidateNode, type ServiceId, type ServiceLayer } from '../data/services'
 import { skillById, type SkillId } from '../data/skills'
+import type { ProjectId } from '../data/projects'
 import './map.css'
 
 /** Цвета слоёв конфигурации. */
@@ -63,20 +64,29 @@ interface SystemMapProps {
   activeNode: ServiceId | null
   onActivate: (id: ServiceId) => void
   hoveredSkill: SkillId | null
+  hoveredProject: ProjectId | null
 }
 
-export default function SystemMap({ activeNode, onActivate, hoveredSkill }: SystemMapProps) {
+export default function SystemMap({
+  activeNode,
+  onActivate,
+  hoveredSkill,
+  hoveredProject,
+}: SystemMapProps) {
   const skillServices =
     hoveredSkill != null ? (skillById.get(hoveredSkill)?.services ?? []) : null
+  const projectServices =
+    hoveredProject != null
+      ? services.filter((s) => s.projects.includes(hoveredProject)).map((s) => s.id)
+      : null
+  const hotServices = skillServices ?? projectServices
 
-  const isDim = (id: ServiceId) => skillServices != null && !skillServices.includes(id)
+  const isDim = (id: ServiceId) => hotServices != null && !hotServices.includes(id)
   const isActive = (id: ServiceId) => activeNode === id
 
   const edgeHighlighted = (e: { from: ServiceId; to: ServiceId }) => {
-    if (skillServices == null) return false
-    const fromUses = skillServices.includes(e.from)
-    const toUses = skillServices.includes(e.to)
-    return fromUses && toUses
+    if (hotServices == null) return false
+    return hotServices.includes(e.from) && hotServices.includes(e.to)
   }
 
   return (
@@ -96,7 +106,7 @@ export default function SystemMap({ activeNode, onActivate, hoveredSkill }: Syst
               'map-edge',
               e.dashed ? 'map-edge--dashed' : '',
               edgeHighlighted(e) ? 'is-hot' : '',
-              skillServices != null && !edgeHighlighted(e) ? 'is-dim' : '',
+              hotServices != null && !edgeHighlighted(e) ? 'is-dim' : '',
             ]
               .filter(Boolean)
               .join(' ')
