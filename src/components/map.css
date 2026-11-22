@@ -1,40 +1,111 @@
-/* Карта АБС: SVG-схема с узлами и связями. */
+/* Карта АБС: тёмный врез-«монитор» внутри светлого документа.
+   Схема: ортогональные трассы, штриховка слоёв, пины подключения. */
 
 .map-wrap {
-  background: var(--bg-1);
-  border: 1px solid var(--stroke-1);
-  border-radius: var(--radius-lg);
-  padding: 12px;
+  background: var(--mon-bg);
+  border: 1px solid var(--rule-strong);
+}
+
+/* Рамка монитора */
+
+.map-chrome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--mon-edge);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mon-text-2);
+}
+
+.map-chrome__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-chrome__led {
+  width: 7px;
+  height: 7px;
+  background: var(--mon-ok);
 }
 
 .map-svg {
   display: block;
   width: 100%;
   height: auto;
+  padding: 6px 4px 0;
 }
 
-.map-edges line {
-  stroke: var(--stroke-2);
-  stroke-width: 1.6;
+/* Штриховка: линии паттернов окрашиваются токенами слоя */
+
+.hatch {
+  stroke-width: 1;
+  opacity: 0.42;
+}
+
+.hatch--front {
+  stroke: var(--layer-front);
+}
+.hatch--bus {
+  stroke: var(--layer-bus);
+}
+.hatch--core {
+  stroke: var(--layer-core);
+}
+.hatch--data {
+  stroke: var(--layer-data);
+}
+.hatch--ops {
+  stroke: var(--layer-ops);
+}
+.hatch--candidate {
+  stroke: var(--layer-candidate);
+}
+
+/* Связи */
+
+.map-edge__line {
+  stroke: rgba(233, 227, 210, 0.34);
+  stroke-width: 1.4;
   transition:
     stroke 0.2s,
-    opacity 0.2s;
+    opacity 0.2s,
+    stroke-width 0.2s;
 }
 
-.map-edge--dashed {
-  stroke: var(--amber);
-  stroke-dasharray: 6 5;
-  opacity: 0.75;
+.map-edge__pin {
+  fill: rgba(233, 227, 210, 0.34);
+  transition: fill 0.2s;
 }
 
-.map-edge.is-hot {
-  stroke: var(--accent);
-  stroke-width: 2.4;
+.map-edge--dashed .map-edge__line {
+  stroke: var(--layer-candidate);
+  opacity: 0.8;
+}
+
+.map-edge--dashed .map-edge__pin {
+  fill: var(--layer-candidate);
+}
+
+.map-edge.is-hot .map-edge__line {
+  stroke: var(--mon-text);
+  stroke-width: 2.2;
+}
+
+.map-edge.is-hot .map-edge__pin {
+  fill: var(--mon-text);
 }
 
 .map-edge.is-dim {
-  opacity: 0.16;
+  opacity: 0.18;
 }
+
+/* Узлы */
 
 .map-node {
   cursor: pointer;
@@ -43,77 +114,128 @@
 }
 
 .map-node__body {
-  fill: var(--bg-2);
-  stroke: var(--stroke-2);
-  stroke-width: 1.4;
+  stroke-width: 1.2;
   transition:
     stroke 0.2s,
-    filter 0.2s,
-    fill 0.2s;
+    stroke-width 0.2s;
+}
+
+.map-node[data-layer='front'] .map-node__body {
+  fill: url(#hatch-front);
+  stroke: var(--layer-front);
+}
+.map-node[data-layer='bus'] .map-node__body {
+  fill: url(#hatch-bus);
+  stroke: var(--layer-bus);
+}
+.map-node[data-layer='core'] .map-node__body {
+  fill: url(#hatch-core);
+  stroke: var(--layer-core);
+}
+.map-node[data-layer='data'] .map-node__body {
+  fill: url(#hatch-data);
+  stroke: var(--layer-data);
+}
+.map-node[data-layer='ops'] .map-node__body {
+  fill: url(#hatch-ops);
+  stroke: var(--layer-ops);
+}
+
+.map-node__stripe {
+  transition: fill 0.2s;
+}
+
+.map-node[data-layer='front'] .map-node__stripe {
+  fill: var(--layer-front);
+}
+.map-node[data-layer='bus'] .map-node__stripe {
+  fill: var(--layer-bus);
+}
+.map-node[data-layer='core'] .map-node__stripe {
+  fill: var(--layer-core);
+}
+.map-node[data-layer='data'] .map-node__stripe {
+  fill: var(--layer-data);
+}
+.map-node[data-layer='ops'] .map-node__stripe {
+  fill: var(--layer-ops);
 }
 
 .map-node:hover .map-node__body {
-  stroke: var(--accent);
-  fill: var(--bg-3);
+  stroke: var(--mon-text);
+  stroke-width: 1.8;
+}
+
+.map-node:hover .map-node__stripe {
+  fill: var(--mon-text);
 }
 
 .map-node:focus-visible .map-node__body {
-  stroke: var(--cyan);
+  stroke: var(--mon-text);
   stroke-width: 2;
 }
 
 .map-node.is-active .map-node__body {
-  stroke: var(--accent);
+  stroke: var(--mon-text);
   stroke-width: 2.2;
-  filter: drop-shadow(0 0 10px var(--accent-glow));
 }
 
 .map-node.is-dim {
-  opacity: 0.28;
+  opacity: 0.25;
 }
 
-.map-node--candidate .map-node__body {
-  stroke: var(--amber);
+/* Модуль-кандидат: красный пунктир, точечная штриховка */
+
+.map-node.map-node--candidate .map-node__body {
+  fill: url(#hatch-candidate);
+  stroke: var(--layer-candidate);
   stroke-dasharray: 7 5;
-  fill: rgba(240, 180, 41, 0.05);
 }
 
-.map-node--candidate:hover .map-node__body,
-.map-node--candidate.is-active .map-node__body {
-  stroke: var(--amber);
-  filter: drop-shadow(0 0 10px var(--amber-glow));
+.map-node.map-node--candidate .map-node__stripe {
+  fill: var(--layer-candidate);
+}
+
+.map-node.map-node--candidate:hover .map-node__body,
+.map-node.map-node--candidate.is-active .map-node__body {
+  stroke: var(--mon-fail);
+  stroke-width: 2;
+}
+
+.map-node.map-node--candidate:hover .map-node__stripe,
+.map-node.map-node--candidate.is-active .map-node__stripe {
+  fill: var(--mon-fail);
 }
 
 .map-node__dot {
-  fill: var(--green);
+  fill: var(--mon-ok);
 }
 
 .map-node--candidate .map-node__dot {
-  fill: var(--amber);
+  fill: var(--layer-candidate);
   animation: pulse 1.6s ease-in-out infinite;
 }
 
 .map-node__name {
-  fill: var(--text-1);
-  font-family: var(--sans);
-  font-size: 16px;
-  font-weight: 600;
+  fill: var(--mon-text);
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.03em;
 }
 
-.map-node--candidate .map-node__name {
-  fill: var(--amber);
+.map-node.map-node--candidate .map-node__name {
+  fill: var(--mon-fail);
 }
 
 .map-node__layer {
-  fill: var(--text-3);
+  fill: var(--mon-text-2);
   font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
 }
 
 .map-node--candidate .map-node__layer {
-  fill: var(--amber);
-  opacity: 0.85;
+  fill: var(--layer-candidate);
 }
 
 /* Легенда */
@@ -122,10 +244,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  padding: 12px 8px 4px;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--mon-edge);
   font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--text-2);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--mon-text-2);
 }
 
 .map-legend__item {
@@ -135,14 +259,33 @@
 }
 
 .map-legend__swatch {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
+  width: 14px;
+  height: 11px;
+  border: 1px solid rgba(233, 227, 210, 0.4);
+}
+
+.map-legend__swatch--front {
+  background: repeating-linear-gradient(45deg, transparent 0 2px, var(--layer-front) 2px 3px);
+}
+.map-legend__swatch--bus {
+  background: repeating-linear-gradient(0deg, transparent 0 2px, var(--layer-bus) 2px 3px);
+}
+.map-legend__swatch--core {
+  background:
+    repeating-linear-gradient(45deg, transparent 0 2px, var(--layer-core) 2px 3px),
+    repeating-linear-gradient(-45deg, transparent 0 2px, var(--layer-core) 2px 3px);
+}
+.map-legend__swatch--data {
+  background: repeating-linear-gradient(90deg, transparent 0 2px, var(--layer-data) 2px 3px);
+}
+.map-legend__swatch--ops {
+  background-image: radial-gradient(var(--layer-ops) 0.8px, transparent 0.9px);
+  background-size: 3.5px 3.5px;
 }
 
 .map-legend__note {
-  color: var(--amber);
-  opacity: 0.8;
+  color: var(--layer-candidate);
+  opacity: 0.85;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,4 +1,4 @@
-/* Базовые стили и общие компоненты интерфейса АБС. */
+/* Базовые стили «служебного документа»: шапка-бланк, кнопки, разделы, основная надпись. */
 
 * {
   box-sizing: border-box;
@@ -11,65 +11,43 @@ html {
 body {
   margin: 0;
   font: 16px/1.65 var(--sans);
-  color: var(--text-1);
-  background: var(--bg-0);
+  color: var(--ink);
+  background: var(--paper-0);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Сетка-фон: тонкая технологическая разлиновка */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(1100px 500px at 70% -10%, var(--accent-glow), transparent 70%),
-    linear-gradient(var(--bg-0) 0 0);
-  z-index: -2;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(138, 160, 191, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(138, 160, 191, 0.05) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(1200px 800px at 50% 0%, #000 30%, transparent 80%);
-  z-index: -1;
-}
-
 ::selection {
-  background: var(--accent-dim);
-  color: var(--text-1);
+  background: var(--ink);
+  color: var(--paper-1);
 }
 
 a {
-  color: var(--cyan);
-  text-decoration: none;
+  color: var(--stamp);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--stamp-deep);
+  text-decoration-thickness: 2px;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--stamp);
   outline-offset: 2px;
 }
 
 /* ---------- Контейнер ---------- */
 
 .wrap {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 28px;
 }
 
-/* ---------- Статус-бар ---------- */
+/* ---------- Шапка-бланк ---------- */
 
 .statusbar {
   position: sticky;
@@ -79,13 +57,13 @@ a:hover {
   align-items: center;
   gap: 16px;
   padding: 10px 20px;
-  background: rgba(7, 11, 20, 0.88);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--stroke-1);
+  background: rgba(241, 237, 226, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--ink);
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.04em;
-  color: var(--text-2);
+  color: var(--ink-2);
   white-space: nowrap;
 }
 
@@ -93,8 +71,8 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--text-1);
-  font-weight: 600;
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .statusbar__mark {
@@ -103,12 +81,11 @@ a:hover {
   justify-content: center;
   width: 26px;
   height: 26px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, var(--accent), #1e4fd6);
-  color: #fff;
+  background: var(--ink);
+  color: var(--paper-1);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
 }
 
 .statusbar__chips {
@@ -124,51 +101,49 @@ a:hover {
 }
 
 .statusbar__clock {
-  color: var(--text-1);
+  color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
 
 .statusbar__sub {
-  color: var(--text-3);
+  color: var(--ink-3);
 }
 
-/* ---------- Чипы состояния ---------- */
+/* ---------- Чипы состояния: прямоугольные, без свечения ---------- */
 
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 3px 9px;
-  border: 1px solid var(--stroke-1);
-  border-radius: 999px;
-  background: var(--bg-1);
+  border: 1px solid var(--rule);
+  background: transparent;
   font-size: 10.5px;
-  color: var(--text-2);
+  color: var(--ink-2);
 }
 
 .chip__dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 6px var(--green);
-}
-
-.chip--warn .chip__dot {
-  background: var(--amber);
-  box-shadow: 0 0 6px var(--amber);
-  animation: pulse 1.6s ease-in-out infinite;
+  border-radius: 0;
+  background: var(--ok);
 }
 
 .chip--warn {
-  color: var(--amber);
-  border-color: rgba(240, 180, 41, 0.35);
-  background: var(--amber-glow);
+  color: var(--stamp);
+  border-color: var(--stamp);
+  background: var(--stamp-ink);
+  font-weight: 700;
+}
+
+.chip--warn .chip__dot {
+  background: var(--stamp);
+  animation: pulse 1.6s ease-in-out infinite;
 }
 
 .chip--accent {
-  color: var(--accent);
-  border-color: rgba(61, 127, 255, 0.4);
+  color: var(--ink);
+  border-color: var(--rule-strong);
 }
 
 @keyframes pulse {
@@ -187,70 +162,79 @@ a:hover {
   }
 }
 
-/* ---------- Секции-формы ---------- */
+/* ---------- Разделы: рубрика «РАЗДЕЛ N · ЛИСТ N/6» ---------- */
 
 .section {
-  padding: 56px 0 8px;
+  padding: 72px 0 8px;
 }
 
-.form-header {
+.section__head {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: 14px;
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.08em;
-  color: var(--text-3);
   text-transform: uppercase;
-  border-bottom: 1px solid var(--stroke-1);
+  color: var(--ink-3);
+  border-bottom: 2px solid var(--ink);
   padding-bottom: 10px;
-  margin-bottom: 6px;
 }
 
-.form-header__no {
-  color: var(--accent);
+.section__no {
+  color: var(--stamp);
   font-weight: 700;
 }
 
+.section__sheet {
+  font-variant-numeric: tabular-nums;
+}
+
 .section h2 {
-  margin: 18px 0 6px;
-  font-size: 26px;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  color: var(--text-1);
+  margin: 22px 0 6px;
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
 .section__hint {
-  margin: 0 0 24px;
-  max-width: 720px;
-  color: var(--text-2);
-  font-size: 15px;
+  margin: 0 0 26px;
+  max-width: 780px;
+  color: var(--ink-2);
+  font-size: 14.5px;
 }
 
-/* ---------- Кнопки ---------- */
+/* ---------- Кнопки: прямоугольный бланк, моно, uppercase ---------- */
 
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 18px;
-  border-radius: var(--radius);
-  border: 1px solid var(--stroke-2);
-  background: var(--bg-2);
-  color: var(--text-1);
+  padding: 11px 18px;
+  text-decoration: none;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink);
   font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.03em;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   cursor: pointer;
   transition:
-    border-color 0.15s,
     background 0.15s,
+    border-color 0.15s,
     transform 0.1s;
 }
 
 .btn:hover {
-  border-color: var(--accent);
-  background: var(--bg-3);
+  border-color: var(--ink);
+  background: var(--paper-2);
   text-decoration: none;
 }
 
@@ -258,56 +242,105 @@ a:hover {
   transform: translateY(1px);
 }
 
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
 .btn--primary {
-  background: linear-gradient(135deg, var(--accent), #1e4fd6);
-  border-color: transparent;
-  color: #fff;
-  font-weight: 600;
+  background: var(--stamp);
+  border-color: var(--stamp);
+  color: var(--paper-1);
 }
 
 .btn--primary:hover {
-  filter: brightness(1.12);
+  background: var(--stamp-deep);
+  border-color: var(--stamp-deep);
 }
 
-/* ---------- Карточки ---------- */
+.btn--primary:active {
+  transform: translateY(1px);
+}
+
+/* ---------- Карточка-бланк ---------- */
 
 .card {
-  background: var(--bg-1);
-  border: 1px solid var(--stroke-1);
-  border-radius: var(--radius-lg);
+  background: var(--paper-1);
+  border: 1px solid var(--rule-strong);
   padding: 20px;
 }
 
-/* ---------- Плейсхолдеры этапов ---------- */
+/* ---------- Основная надпись (ГОСТ 2.104 вольно) ---------- */
 
-.placeholder {
-  border: 1px dashed var(--stroke-2);
-  border-radius: var(--radius-lg);
-  padding: 40px;
-  text-align: center;
-  color: var(--text-3);
+.titleblock {
+  margin-top: 80px;
+  border: 1px solid var(--rule-strong);
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+  background: var(--paper-1);
 }
 
-/* ---------- Подвал ---------- */
+.titleblock__row {
+  display: grid;
+  border-top: 1px solid var(--rule);
+}
 
-.footer {
-  margin-top: 64px;
-  border-top: 1px solid var(--stroke-1);
-  padding: 24px 0 40px;
+.titleblock__row:first-child {
+  border-top: none;
+}
+
+.titleblock__row--roles {
+  grid-template-columns: 90px 1fr 70px 1fr 90px 1fr;
+}
+
+.titleblock__row--doc {
+  grid-template-columns: 1fr auto;
+}
+
+.tb-cell {
+  padding: 9px 12px;
+  border-left: 1px solid var(--rule);
+  min-width: 0;
+}
+
+.tb-cell:first-child {
+  border-left: none;
+}
+
+.tb-cell--label {
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10.5px;
+}
+
+.tb-cell--grow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tb-cell strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.footer-note {
+  margin: 14px 0 0;
   font-family: var(--mono);
-  font-size: 12px;
-  color: var(--text-3);
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-3);
 }
 
 /* ---------- Мобильная адаптация ---------- */
 
 @media (max-width: 760px) {
+  .wrap {
+    padding: 0 18px;
+  }
+
   .statusbar {
     font-size: 10.5px;
     padding: 8px 12px;
@@ -319,10 +352,32 @@ a:hover {
   }
 
   .section {
-    padding-top: 40px;
+    padding-top: 48px;
   }
 
   .section h2 {
-    font-size: 21px;
+    font-size: 26px;
+  }
+
+  .titleblock__row--roles {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .titleblock__row--roles .tb-cell {
+    border-top: 1px solid var(--rule);
+  }
+
+  .titleblock__row--roles .tb-cell:nth-child(-n + 2) {
+    border-top: none;
+  }
+
+  .titleblock__row--doc {
+    grid-template-columns: 1fr;
+  }
+
+  .titleblock__row--doc .tb-cell + .tb-cell {
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    white-space: normal;
   }
 }

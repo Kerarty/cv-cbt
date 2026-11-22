@@ -1,123 +1,107 @@
-/* Журнал операций: op-log таймлайн. */
+/* Журнал операций: табличный op-log в духе формуляра. */
 
 .oplog {
   list-style: none;
   margin: 0;
   padding: 0;
-  position: relative;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-1);
 }
 
-.oplog__entry {
-  display: flex;
-  gap: 18px;
-  position: relative;
-  padding-bottom: 22px;
+.oplog__row {
+  display: grid;
+  grid-template-columns: 92px 92px 1fr;
+  gap: 16px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--rule-hair);
 }
 
-/* Соединительная линия */
-.oplog__rail {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-shrink: 0;
-  width: 18px;
+.oplog__row:last-child {
+  border-bottom: none;
 }
 
-.oplog__rail::before {
-  content: '';
-  position: absolute;
-  top: 14px;
-  bottom: 0;
-  width: 2px;
-  background: var(--stroke-1);
-}
-
-.oplog__entry:last-child .oplog__rail::before {
-  display: none;
-}
-
-.oplog__dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  background: var(--bg-0);
-  margin-top: 5px;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.oplog__entry.oplog__tag--ship .oplog__dot {
-  border-color: var(--green);
-  background: rgba(52, 211, 153, 0.15);
-}
-
-.oplog__entry.oplog__tag--req .oplog__dot {
-  border-color: var(--amber);
-  background: rgba(240, 180, 41, 0.2);
-  box-shadow: 0 0 10px var(--amber-glow);
-}
-
-.oplog__meta {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
+.oplog__row--head {
+  padding: 9px 18px;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 .oplog__date {
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--text-3);
+  color: var(--ink-3);
   font-variant-numeric: tabular-nums;
+  padding-top: 2px;
+}
+
+.oplog__tagcell {
+  padding-top: 2px;
 }
 
 .oplog__tag {
+  display: inline-block;
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   padding: 2px 8px;
-  border-radius: 4px;
-  border: 1px solid;
+  border: 1px solid var(--rule-strong);
+  color: var(--ink-2);
 }
 
-.oplog__tag--edu {
-  color: var(--cyan);
-  border-color: rgba(56, 189, 248, 0.35);
+.oplog__row--ship .oplog__tag {
+  color: var(--ok);
+  border-color: var(--ok);
+  background: var(--ok-ink);
 }
 
-.oplog__tag--proj {
-  color: var(--accent);
-  border-color: rgba(61, 127, 255, 0.35);
+.oplog__row--req {
+  background: var(--stamp-ink);
+  box-shadow: inset 3px 0 0 var(--stamp);
 }
 
-.oplog__tag--ship {
-  color: var(--green);
-  border-color: rgba(52, 211, 153, 0.35);
-}
-
-.oplog__tag--req {
-  color: var(--amber);
-  border-color: rgba(240, 180, 41, 0.4);
-  background: var(--amber-glow);
+.oplog__row--req .oplog__tag {
+  color: var(--stamp);
+  border-color: var(--stamp);
+  font-weight: 700;
 }
 
 .oplog__op {
   font-family: var(--mono);
   font-size: 13px;
-  font-weight: 600;
-  color: var(--text-1);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
 }
 
 .oplog__detail {
-  margin: 6px 0 0;
+  margin: 5px 0 0;
   max-width: 760px;
   font-size: 14px;
   line-height: 1.6;
-  color: var(--text-2);
+  color: var(--ink-2);
 }
 
-.oplog__entry.oplog__tag--req .oplog__detail {
-  color: var(--text-1);
+.oplog__row--req .oplog__detail {
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .oplog__row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 14px 16px;
+  }
+
+  .oplog__row--head {
+    display: none;
+  }
+
+  .oplog__date {
+    padding-top: 0;
+  }
 }

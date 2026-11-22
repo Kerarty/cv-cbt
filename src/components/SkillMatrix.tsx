@@ -9,15 +9,16 @@ interface SkillMatrixProps {
 
 export default function SkillMatrix({ onHoverSkill }: SkillMatrixProps) {
   return (
-    <div className="smatrix" role="table" aria-label="Матрица соответствия навыков">
+    <div className="smatrix" role="table" aria-label="Ведомость соответствия навыков">
       <div className="smatrix__row smatrix__row--head" role="row">
+        <span role="columnheader">№</span>
         <span role="columnheader">Требование вакансии</span>
         <span role="columnheader">Навык</span>
         <span role="columnheader">Доказательство</span>
         <span role="columnheader">Модули</span>
       </div>
 
-      {skills.map((s) => (
+      {skills.map((s, i) => (
         <div
           key={s.id}
           className="smatrix__row"
@@ -25,6 +26,10 @@ export default function SkillMatrix({ onHoverSkill }: SkillMatrixProps) {
           onMouseEnter={() => onHoverSkill(s.id)}
           onMouseLeave={() => onHoverSkill(null)}
         >
+          <span className="smatrix__no" role="cell" aria-label={`Строка ${i + 1}`}>
+            {String(i + 1).padStart(2, '0')}
+          </span>
+
           <span className="smatrix__vacancy" role="cell" data-label="Требование">
             {s.vacancy}
           </span>
@@ -36,11 +41,11 @@ export default function SkillMatrix({ onHoverSkill }: SkillMatrixProps) {
               title={`${s.level} из 5 — ${readiness(s.level)}`}
               aria-label={`Уровень ${s.level} из 5, ${readiness(s.level)}`}
             >
-              {Array.from({ length: 5 }, (_, i) => (
-                <span key={i} className={`smatrix__seg${i < s.level ? ' is-on' : ''}`} />
+              {Array.from({ length: 5 }, (_, j) => (
+                <span key={j} className={`smatrix__seg${j < s.level ? ' is-on' : ''}`} />
               ))}
-              <span className="smatrix__readiness">{readiness(s.level)}</span>
             </span>
+            <span className="smatrix__readiness">{readiness(s.level)}</span>
           </span>
 
           <span className="smatrix__evidence" role="cell" data-label="Доказательство">

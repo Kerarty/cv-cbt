@@ -1,41 +1,14 @@
-/* Print/PDF-режим: статичная светлая версия всех разделов для HR.
-   Токены переопределяются на светлые — весь интерфейс перекрашивается сам. */
+/* Print/PDF-режим: документ и так светлый — убираем интерактив,
+   гасим тень монитора и добавляем адреса ссылок. */
 
 @media print {
-  :root {
-    color-scheme: light;
-    --bg-0: #ffffff;
-    --bg-1: #ffffff;
-    --bg-2: #f4f6fa;
-    --bg-3: #e9edf4;
-    --stroke-1: #c9d2e0;
-    --stroke-2: #9aa8bd;
-    --text-1: #101828;
-    --text-2: #344054;
-    --text-3: #667085;
-    --accent: #1e4fd6;
-    --accent-dim: #1e4fd6;
-    --accent-glow: rgba(30, 79, 214, 0.12);
-    --amber: #8a5a00;
-    --amber-glow: rgba(138, 90, 0, 0.1);
-    --green: #067647;
-    --red: #b42318;
-    --cyan: #0b6f9e;
-  }
-
   @page {
     margin: 12mm;
   }
 
   body {
     background: #fff;
-    color: var(--text-1);
     font-size: 12.5px;
-  }
-
-  body::before,
-  body::after {
-    display: none;
   }
 
   /* Интерактивные элементы не печатаем */
@@ -43,57 +16,86 @@
   .hcheck,
   .hero__actions,
   .cta__contact-actions,
-  .hcheck__cta {
+  .btn {
     display: none !important;
   }
 
   .statusbar {
     position: static;
     background: #fff;
-    border-color: var(--stroke-1);
   }
 
-  .btn {
-    border-color: var(--stroke-2);
-    background: var(--bg-2);
-    color: var(--text-1);
+  /* Монитор карты: на печати — обычная схема на белом */
+  .map-wrap {
+    background: #fff;
+    border-color: var(--rule-strong);
   }
 
-  .btn--primary {
-    background: var(--accent) !important;
-    color: #fff !important;
+  .map-chrome,
+  .map-legend {
+    color: var(--ink-2);
+    border-color: var(--rule);
   }
 
-  /* На печати всё статично: без затемнений и подсветок */
-  .map-node.is-dim,
-  .map-edge.is-dim,
-  .map-edge {
-    opacity: 1 !important;
+  .map-chrome__led {
+    background: var(--ok);
   }
 
-  .map-node.is-active .map-node__body {
-    filter: none;
-    stroke-width: 1.6;
+  .map-edge__line {
+    stroke: var(--ink-2);
+  }
+
+  .map-edge__pin {
+    fill: var(--ink-2);
+  }
+
+  .map-edge--dashed .map-edge__line,
+  .map-edge--dashed .map-edge__pin {
+    stroke: var(--stamp);
+    fill: var(--stamp);
+  }
+
+  .map-node__name {
+    fill: var(--ink);
+  }
+
+  .map-node__layer {
+    fill: var(--ink-2);
+  }
+
+  .map-node__dot {
+    fill: var(--ok);
+  }
+
+  .map-node--candidate .map-node__dot {
+    fill: var(--stamp);
   }
 
   .map-node__body {
-    fill: #fff;
-    stroke: var(--stroke-2);
+    stroke-width: 1;
   }
 
-  .map-node--candidate .map-node__body {
-    fill: #fffdf5;
-    stroke: var(--amber);
+  .map-node.is-dim,
+  .map-edge.is-dim {
+    opacity: 1;
   }
 
-  /* Не разрывать карточки между страницами */
+  /* Без жёстких теней и подъёмов */
+  .hero__card,
+  .cta__panel,
+  .reg__card:hover {
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* Не разрывать блоки между страницами */
   .card,
   .reg__card,
   .smatrix__row,
-  .oplog__entry,
+  .oplog__row,
   .cta__contact,
   .hero__card,
-  .hcheck {
+  .titleblock {
     break-inside: avoid;
   }
 
@@ -101,17 +103,8 @@
     padding-top: 24px;
   }
 
-  .form-header {
-    border-color: var(--stroke-1);
-  }
-
-  .footer {
-    border-color: var(--stroke-1);
+  .titleblock {
     margin-top: 28px;
-  }
-
-  a {
-    color: var(--cyan);
   }
 
   /* Ссылки в печати: показываем адрес после текста */
@@ -119,6 +112,6 @@
   .npanel__projects a::after {
     content: ' (' attr(href) ')';
     font-size: 10px;
-    color: var(--text-3);
+    color: var(--ink-3);
   }
 }

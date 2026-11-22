@@ -1,10 +1,10 @@
-/* Диагностика конфигурации: построчный healthcheck в стиле системного лога. */
+/* Диагностика конфигурации: консоль, стыкованная с монитором карты снизу. */
 
 .hcheck {
-  margin-top: 16px;
-  border: 1px solid var(--stroke-1);
-  border-radius: var(--radius-lg);
-  background: var(--bg-1);
+  margin-top: -1px;
+  border: 1px solid var(--rule-strong);
+  border-top: 1px solid var(--mon-edge);
+  background: var(--mon-bg);
   padding: 16px 18px;
 }
 
@@ -15,16 +15,28 @@
   flex-wrap: wrap;
 }
 
+/* Кнопка на тёмном фоне консоли */
+.hcheck .btn {
+  border-color: var(--mon-edge);
+  color: var(--mon-text);
+}
+
+.hcheck .btn:hover {
+  border-color: var(--mon-text);
+  background: var(--mon-bg-2);
+}
+
 .hcheck__verdict {
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--amber);
+  letter-spacing: 0.04em;
+  color: var(--mon-fail);
   animation: pulse 1.6s ease-in-out infinite;
 }
 
 .hcheck__output {
   margin-top: 14px;
-  border-top: 1px solid var(--stroke-1);
+  border-top: 1px solid var(--mon-edge);
   padding-top: 12px;
   font-family: var(--mono);
   font-size: 12.5px;
@@ -33,7 +45,7 @@
 
 .hcheck__line {
   margin: 0;
-  color: var(--text-2);
+  color: var(--mon-text-2);
   animation: line-in 0.18s ease-out;
 }
 
@@ -57,32 +69,29 @@
 
 .hcheck__mark {
   margin-right: 10px;
-  color: var(--text-3);
-}
-
-.hcheck__line--ok {
-  color: var(--text-2);
+  color: var(--mon-text-2);
 }
 
 .hcheck__line--ok .hcheck__mark {
-  color: var(--green);
+  color: var(--mon-ok);
 }
 
 .hcheck__line--fail {
-  color: var(--amber);
-  font-weight: 600;
-}
-
-.hcheck__line--fail .hcheck__mark {
-  color: var(--red);
+  color: var(--mon-fail);
+  font-weight: 700;
 }
 
 .hcheck__line--info {
-  color: var(--text-1);
+  color: var(--mon-text);
 }
 
 .hcheck__cta {
   margin-top: 14px;
+}
+
+/* Красная кнопка на тёмном — чуть ярче контур */
+.hcheck .btn--primary {
+  border-color: var(--stamp);
 }
 
 .hcheck__cta[aria-hidden] {

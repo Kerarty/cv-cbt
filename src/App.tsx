@@ -30,6 +30,7 @@ function App() {
         <Section
           id="map"
           no="01"
+          sheet="2 / 6"
           title="Конфигурация системы"
           hint="Клик по узлу — зона ответственности и чем её закрывает кандидат. Пунктирный узел внизу — незадействованный модуль."
         >
@@ -45,7 +46,8 @@ function App() {
         <Section
           id="skills"
           no="02"
-          title="Матрица соответствия"
+          sheet="3 / 6"
+          title="Ведомость соответствия"
           hint="Требование вакансии → честный уровень → доказательство. Наведите на строку — узлы карты подсветятся."
         >
           <SkillMatrix onHoverSkill={setHoveredSkill} />
@@ -54,6 +56,7 @@ function App() {
         <Section
           id="registry"
           no="03"
+          sheet="4 / 6"
           title="Реестр модулей"
           hint="Личные проекты как модули системы: стек, архитектурные решения, автотесты. Только публично проверяемое — без приписок. Наведите на карточку — увидите её место на карте."
         >
@@ -63,6 +66,7 @@ function App() {
         <Section
           id="log"
           no="04"
+          sheet="5 / 6"
           title="Журнал операций"
           hint="Хронология в формате op-log: инициализация, сборки, релизы, заявка на подключение."
         >
@@ -72,21 +76,39 @@ function App() {
         <Section
           id="connect"
           no="05"
+          sheet="6 / 6"
           title="Заявка на подключение"
           hint="Healthcheck рекомендует закрыть незамкнутую зависимость: модуль подключается одним собеседованием."
         >
           <Cta />
         </Section>
 
-        <footer className="footer">
-          <span>
-            Данные резюме — только проверяемый опыт · Дипломный проект описан без ссылки
-            (репозиторий приватный)
-          </span>
-          <span>
-            {candidate.lastName} {candidate.firstName} · 2026 · React + TypeScript + Vite
-          </span>
+        <footer className="titleblock" aria-label="Основная надпись документа">
+          <div className="titleblock__row titleblock__row--roles">
+            <span className="tb-cell tb-cell--label">Разраб.</span>
+            <span className="tb-cell">
+              <strong>
+                {candidate.lastName} {candidate.firstName}
+              </strong>{' '}
+              · БГУИР, 4 курс
+            </span>
+            <span className="tb-cell tb-cell--label">Пров.</span>
+            <span className="tb-cell">HR ЦБТ</span>
+            <span className="tb-cell tb-cell--label">Утв.</span>
+            <span className="tb-cell">собеседованием</span>
+          </div>
+          <div className="titleblock__row titleblock__row--doc">
+            <span className="tb-cell tb-cell--grow">
+              АБС. Интерактивное резюме модуля <strong>{candidate.moduleCode}</strong> · React +
+              TypeScript + Vite
+            </span>
+            <span className="tb-cell">Лист 1 · Листов 6</span>
+          </div>
         </footer>
+        <p className="footer-note">
+          Данные резюме — только проверяемый опыт · Дипломный проект описан без ссылки (репозиторий
+          приватный) · Шрифты ParaType, собраны локально
+        </p>
       </main>
     </>
   )

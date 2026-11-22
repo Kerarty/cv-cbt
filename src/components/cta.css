@@ -1,47 +1,76 @@
-/* Заявка на подключение: CTA-панель + контакты. */
+/* Заявка на подключение: бланк + ведомость контактов. */
 
 .cta {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
-  gap: 16px;
+  gap: 18px;
   align-items: stretch;
 }
 
+/* Двойная рамка бланка: внешняя линия + внутренний контур */
 .cta__panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  border-color: rgba(240, 180, 41, 0.3);
-  background:
-    linear-gradient(160deg, rgba(240, 180, 41, 0.07), transparent 45%),
-    var(--bg-1);
+  background: var(--paper-1);
+  border: 1px solid var(--rule-strong);
+  box-shadow: var(--shadow-hard);
+  padding: 26px;
+}
+
+.cta__panel::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--rule-hair);
+  pointer-events: none;
+}
+
+.cta__panel > * {
+  position: relative;
 }
 
 .cta__crumb {
   margin: 0;
   font-family: var(--mono);
   font-size: 10.5px;
-  letter-spacing: 0.08em;
-  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 .cta__headline {
   margin: 0;
-  font-size: 24px;
+  font-family: var(--display);
+  font-size: 27px;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
-.cta__amber {
-  color: var(--amber);
+.cta__mark {
+  color: var(--stamp);
 }
 
 .cta__text {
   margin: 0;
   font-size: 14.5px;
   line-height: 1.6;
-  color: var(--text-2);
+  color: var(--ink-2);
+}
+
+.cta__act {
+  margin: 6px 0 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--rule-hair);
+  padding-bottom: 8px;
 }
 
 .cta__checklist {
@@ -53,27 +82,27 @@
 .cta__check {
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--green);
-  padding: 5px 11px;
-  border: 1px solid rgba(52, 211, 153, 0.3);
-  border-radius: 999px;
-  background: rgba(52, 211, 153, 0.06);
+  color: var(--ok);
+  padding: 4px 10px;
+  border: 1px solid var(--ok);
+  background: var(--ok-ink);
 }
 
 .cta__apply {
   margin-top: 4px;
   justify-content: center;
   text-align: center;
+  padding: 14px 18px;
 }
 
 .cta__note {
   margin: 0;
   font-size: 12px;
-  color: var(--text-3);
+  color: var(--ink-3);
   line-height: 1.5;
 }
 
-/* Контакты */
+/* Контакты: ведомость */
 
 .cta__contacts {
   display: flex;
@@ -88,10 +117,14 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: var(--bg-1);
-  border: 1px solid var(--stroke-1);
-  border-radius: var(--radius-lg);
+  background: var(--paper-1);
+  border: 1px solid var(--rule-strong);
   flex-wrap: wrap;
+  transition: border-color 0.15s;
+}
+
+.cta__contact:hover {
+  border-color: var(--ink);
 }
 
 .cta__contact-info {
@@ -104,14 +137,15 @@
 .cta__contact-label {
   font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 .cta__contact-value {
   font-family: var(--mono);
   font-size: 13px;
-  color: var(--text-1);
+  color: var(--ink);
   word-break: break-all;
 }
 
@@ -122,14 +156,14 @@
 
 .cta__contact-actions .btn {
   padding: 7px 12px;
-  font-size: 11.5px;
+  font-size: 11px;
 }
 
 .cta__copied {
   margin: 0;
   font-family: var(--mono);
   font-size: 11.5px;
-  color: var(--green);
+  color: var(--ok);
 }
 
 @media (max-width: 860px) {

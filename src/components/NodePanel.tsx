@@ -3,10 +3,9 @@ import { serviceById, type ServiceId, type ServiceLayer } from '../data/services
 import { skillById, skills, type SkillId } from '../data/skills'
 import { projectById, projects } from '../data/projects'
 import { candidate } from '../data/candidate'
-import { LAYER_COLORS } from './SystemMap'
 import './nodePanel.css'
 
-const LAYER_LABELS: Record<ServiceLayer, string> = {
+const LAYER_TITLES: Record<ServiceLayer, string> = {
   front: 'канальный слой',
   bus: 'интеграционный слой',
   core: 'ядро системы',
@@ -35,8 +34,7 @@ export default function NodePanel({ nodeId, onClose, onHoverSkill }: NodePanelPr
   const service = serviceById.get(nodeId)
   if (!isCandidate && !service) return null
 
-  const layer = isCandidate ? 'bus' : service!.layer
-  const color = LAYER_COLORS[layer]
+  const layer = isCandidate ? 'candidate' : service!.layer
 
   const projectCards = (isCandidate ? [] : service!.projects)
     .map((p) => projectById.get(p as (typeof projects)[number]['id']))
@@ -47,11 +45,17 @@ export default function NodePanel({ nodeId, onClose, onHoverSkill }: NodePanelPr
     : service!.skills.map((id) => skillById.get(id as SkillId)!).filter(Boolean)
 
   return (
-    <aside className="npanel" role="dialog" aria-label={isCandidate ? 'Модуль кандидата' : `Узел: ${service!.name}`}>
-      <div className="npanel__head" style={{ borderTopColor: color }}>
+    <aside
+      className={`npanel npanel--${layer}`}
+      role="dialog"
+      aria-label={isCandidate ? 'Модуль кандидата' : `Узел: ${service!.name}`}
+    >
+      <div className="npanel__head">
         <div>
           <p className="npanel__crumb">
-            {isCandidate ? 'ЗАЯВКА REQ-2026-0001' : `УЗЕЛ КОНФИГУРАЦИИ · ${LAYER_LABELS[layer].toUpperCase()}`}
+            {isCandidate
+              ? `ЗАЯВКА REQ-2026-0001`
+              : `УЗЕЛ КОНФИГУРАЦИИ · ${LAYER_TITLES[service!.layer].toUpperCase()}`}
           </p>
           <p className="npanel__title">{isCandidate ? candidate.moduleName : service!.name}</p>
         </div>
@@ -68,7 +72,7 @@ export default function NodePanel({ nodeId, onClose, onHoverSkill }: NodePanelPr
           <p className="npanel__text">
             Healthcheck конфигурации находит незамкнутую зависимость: в контуре АБС нет модуля
             «инженер-программист». Совместимость проверена по всем требованиям вакансии —
-            смотрите матрицу соответствия и реестр модулей.
+            смотрите ведомость соответствия и реестр модулей.
           </p>
           <p className="npanel__label">Кандидат модуля</p>
           <p className="npanel__text npanel__text--strong">
@@ -88,8 +92,8 @@ export default function NodePanel({ nodeId, onClose, onHoverSkill }: NodePanelPr
           <p className="npanel__label">Зона ответственности</p>
           <p className="npanel__text">{service!.problem}</p>
 
-          <p className="npanel__label npanel__label--amber">Чем закрывает модуль ЯК</p>
-          <p className="npanel__text npanel__text--amber">{service!.proof}</p>
+          <p className="npanel__label npanel__label--mark">Чем закрывает модуль ЯК</p>
+          <p className="npanel__text npanel__text--mark">{service!.proof}</p>
 
           {projectCards.length > 0 && (
             <>

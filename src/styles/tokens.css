@@ -1,37 +1,59 @@
-/* Дизайн-токены АБС: тёмная банковская тема, нулевые внешние зависимости. */
+/* Дизайн-токены: «служебный документ» — бумага, чернила, красный штамп.
+   Шрифты ParaType (PT Sans Narrow / PT Sans / PT Mono) собраны локально, внешних запросов нет. */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* Фоны */
-  --bg-0: #070b14;
-  --bg-1: #0b1220;
-  --bg-2: #101a2e;
-  --bg-3: #16223a;
+  /* Бумага */
+  --paper-0: #f1ede2;
+  --paper-1: #faf7ee;
+  --paper-2: #e7e1d1;
+  --paper-3: #d9d1bd;
 
-  /* Обводки */
-  --stroke-1: #1b2740;
-  --stroke-2: #2a3a5c;
+  /* Чернила */
+  --ink: #1e1b14;
+  --ink-2: #55514a;
+  --ink-3: #8d8779;
 
-  /* Текст */
-  --text-1: #d9e3f5;
-  --text-2: #8fa0bf;
-  --text-3: #5d6e90;
+  /* Линейки чертежа */
+  --rule: rgba(30, 27, 20, 0.18);
+  --rule-strong: rgba(30, 27, 20, 0.45);
+  --rule-hair: rgba(30, 27, 20, 0.1);
 
-  /* Акценты */
-  --accent: #3d7fff;
-  --accent-dim: #1e3a6e;
-  --accent-glow: rgba(61, 127, 255, 0.16);
-  --amber: #f0b429;
-  --amber-glow: rgba(240, 180, 41, 0.14);
-  --green: #34d399;
-  --red: #f87171;
-  --cyan: #38bdf8;
+  /* Красный штамп — единственный акцент */
+  --stamp: #b52c1a;
+  --stamp-deep: #8e2113;
+  --stamp-ink: rgba(181, 44, 26, 0.07);
+
+  /* Статусы */
+  --ok: #2e6b4e;
+  --ok-ink: rgba(46, 107, 78, 0.09);
+  --warn: #9c6a00;
+
+  /* Тёмный врез-«монитор»: схема контура и консоль diagnostics */
+  --mon-bg: #1b1a15;
+  --mon-bg-2: #24221a;
+  --mon-edge: rgba(233, 227, 210, 0.16);
+  --mon-text: #e9e3d2;
+  --mon-text-2: #a39d8b;
+  --mon-ok: #7cc492;
+  --mon-fail: #e4654f;
+
+  /* Слои конфигурации на мониторе (приглушённая схема, без неона) */
+  --layer-front: #7fb3c4;
+  --layer-bus: #7f95cf;
+  --layer-core: #7cbb8e;
+  --layer-data: #c9ad72;
+  --layer-ops: #cf9c5c;
+  --layer-candidate: #e4654f;
 
   /* Шрифты */
-  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace;
-  --sans: Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'PT Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --sans: 'PT Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --display: 'PT Sans Narrow', 'PT Sans', system-ui, sans-serif;
 
-  --radius: 8px;
-  --radius-lg: 12px;
+  /* Документ: острые углы, жёсткая тень вместо мягкой */
+  --radius: 0px;
+  --radius-lg: 0px;
+  --shadow-hard: 4px 4px 0 rgba(30, 27, 20, 0.13);
 }

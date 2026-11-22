@@ -1,4 +1,4 @@
-/* Панель узла: докер справа на десктопе, нижний лист на мобильных. */
+/* Панель узла: бумажный докер справа на десктопе, нижний лист на мобильных. */
 
 .npanel {
   position: fixed;
@@ -9,9 +9,9 @@
   height: 100svh;
   display: flex;
   flex-direction: column;
-  background: var(--bg-1);
-  border-left: 1px solid var(--stroke-1);
-  box-shadow: -24px 0 60px rgba(0, 0, 0, 0.45);
+  background: var(--paper-1);
+  border-left: 1px solid var(--ink);
+  box-shadow: -10px 0 0 rgba(30, 27, 20, 0.08);
   animation: npanel-in 0.22s ease-out;
 }
 
@@ -32,14 +32,33 @@
   }
 }
 
+/* Цвет слоя узла — верхняя плашка панели */
+.npanel--front {
+  border-top: 6px solid var(--layer-front);
+}
+.npanel--bus {
+  border-top: 6px solid var(--layer-bus);
+}
+.npanel--core {
+  border-top: 6px solid var(--layer-core);
+}
+.npanel--data {
+  border-top: 6px solid var(--layer-data);
+}
+.npanel--ops {
+  border-top: 6px solid var(--layer-ops);
+}
+.npanel--candidate {
+  border-top: 6px solid var(--stamp);
+}
+
 .npanel__head {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
   padding: 18px 20px 14px;
-  border-top: 3px solid var(--accent);
-  border-bottom: 1px solid var(--stroke-1);
+  border-bottom: 2px solid var(--ink);
 }
 
 .npanel__crumb {
@@ -47,24 +66,27 @@
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: 0.08em;
-  color: var(--text-3);
+  color: var(--ink-3);
 }
 
 .npanel__title {
-  margin: 4px 0 0;
-  font-size: 19px;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  margin: 6px 0 0;
+  font-family: var(--display);
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 
 .npanel__close {
   flex-shrink: 0;
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  border: 1px solid var(--stroke-2);
-  background: var(--bg-2);
-  color: var(--text-1);
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink);
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
@@ -74,8 +96,8 @@
 }
 
 .npanel__close:hover {
-  border-color: var(--accent);
-  background: var(--bg-3);
+  border-color: var(--ink);
+  background: var(--paper-2);
 }
 
 .npanel__body {
@@ -91,22 +113,21 @@
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.05em;
-  color: var(--green);
-  border: 1px solid rgba(52, 211, 153, 0.3);
-  background: rgba(52, 211, 153, 0.08);
-  border-radius: 999px;
+  color: var(--ok);
+  border: 1px solid var(--ok);
+  background: var(--ok-ink);
   padding: 4px 12px;
 }
 
 .npanel__status--warn {
-  color: var(--amber);
-  border-color: rgba(240, 180, 41, 0.35);
-  background: var(--amber-glow);
+  color: var(--stamp);
+  border-color: var(--stamp);
+  background: var(--stamp-ink);
+  font-weight: 700;
 }
 
 .npanel__status--warn .chip__dot {
-  background: var(--amber);
-  box-shadow: 0 0 6px var(--amber);
+  background: var(--stamp);
   animation: pulse 1.6s ease-in-out infinite;
 }
 
@@ -116,29 +137,29 @@
   font-size: 10.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--ink-3);
 }
 
-.npanel__label--amber {
-  color: var(--amber);
+.npanel__label--mark {
+  color: var(--stamp);
 }
 
 .npanel__text {
   margin: 0;
   font-size: 14px;
   line-height: 1.6;
-  color: var(--text-2);
+  color: var(--ink-2);
 }
 
-.npanel__text--amber {
-  color: var(--text-1);
-  border-left: 2px solid var(--amber);
+.npanel__text--mark {
+  color: var(--ink);
+  border-left: 2px solid var(--stamp);
   padding-left: 12px;
 }
 
 .npanel__text--strong {
-  color: var(--text-1);
-  font-weight: 600;
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .npanel__projects {
@@ -151,26 +172,28 @@
 }
 
 .npanel__projects li {
-  background: var(--bg-2);
-  border: 1px solid var(--stroke-1);
-  border-radius: var(--radius);
+  background: var(--paper-0);
+  border: 1px solid var(--rule);
   padding: 9px 12px;
   font-size: 13.5px;
 }
 
 .npanel__projects a {
-  color: var(--text-1);
+  color: var(--ink);
+  text-decoration: none;
 }
 
 .npanel__projects a:hover {
-  color: var(--cyan);
-  text-decoration: none;
+  color: var(--stamp);
+  text-decoration: underline;
 }
 
 .npanel__codename {
   font-family: var(--mono);
   font-size: 11px;
-  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--stamp);
   margin-right: 8px;
 }
 
@@ -187,12 +210,11 @@
 
 .npanel__skill {
   padding: 5px 12px;
-  border: 1px solid var(--stroke-2);
-  border-radius: 999px;
-  background: var(--bg-2);
+  border: 1px solid var(--rule-strong);
+  background: transparent;
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--text-2);
+  color: var(--ink-2);
   cursor: default;
   transition:
     color 0.15s,
@@ -200,8 +222,8 @@
 }
 
 .npanel__skill:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+  color: var(--stamp);
+  border-color: var(--stamp);
 }
 
 .npanel__cta {
@@ -217,9 +239,10 @@
     width: 100%;
     height: min(78svh, 640px);
     border-left: none;
-    border-top: 1px solid var(--stroke-1);
-    border-radius: 16px 16px 0 0;
-    box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.5);
+    border-right: none;
+    border-top: 1px solid var(--ink);
+    border-radius: 0;
+    box-shadow: 0 -8px 0 rgba(30, 27, 20, 0.08);
     animation-name: npanel-up;
   }
 

@@ -57,15 +57,16 @@ export default function Cta() {
   return (
     <div className="cta">
       <div className="cta__panel card">
-        <p className="cta__crumb">РЕШЕНИЕ ПО ЗАЯВКЕ REQ-2026-0001</p>
+        <p className="cta__crumb">ФОРМА ЗАЯВКИ · REQ-2026-0001</p>
         <p className="cta__headline">
-          Контур замыкается <span className="cta__amber">одним собеседованием</span>
+          Контур замыкается <span className="cta__mark">одним собеседованием</span>
         </p>
         <p className="cta__text">
           Все требования вакансии закрыты доказуемо: в реестре — 8 модулей с исходниками и
-          тестами, в матрице — честные уровни. Модуль готов к подключению.
+          тестами, в ведомости — честные уровни. Модуль готов к подключению.
         </p>
 
+        <p className="cta__act">Акт соответствия требованиям вакансии</p>
         <div className="cta__checklist">
           {skills
             .filter((s) => s.vacancy.startsWith('Опыт') || ['systems', 'debugging', 'docs'].includes(s.id))

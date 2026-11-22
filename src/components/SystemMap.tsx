@@ -3,13 +3,13 @@ import { skillById, type SkillId } from '../data/skills'
 import type { ProjectId } from '../data/projects'
 import './map.css'
 
-/** Цвета слоёв конфигурации. */
-export const LAYER_COLORS: Record<ServiceLayer, string> = {
-  front: '#38bdf8',
-  bus: '#3d7fff',
-  core: '#34d399',
-  data: '#a78bfa',
-  ops: '#f0b429',
+/** Метки слоёв для легенды. */
+const LEGEND_LABELS: Record<ServiceLayer, string> = {
+  front: 'каналы',
+  bus: 'интеграция',
+  core: 'ядро',
+  data: 'данные',
+  ops: 'эксплуатация',
 }
 
 interface MapNode {
@@ -37,28 +37,26 @@ const nodes: MapNode[] = [
   },
 ]
 
-const nodeById = new Map(nodes.map((n) => [n.id, n]))
 
-/** Связи конфигурации. Связь с модулем-кандидатом — пунктир: физически ещё не замкнута. */
-const EDGES: Array<{ from: ServiceId; to: ServiceId; dashed?: boolean }> = [
-  { from: 'channels', to: 'gateway' },
-  { from: 'gateway', to: 'bus' },
-  { from: 'bus', to: 'core' },
-  { from: 'bus', to: 'payments' },
-  { from: 'core', to: 'payments' },
-  { from: 'core', to: 'dwh' },
-  { from: 'payments', to: 'dwh' },
-  { from: 'core', to: 'aml' },
-  { from: 'bus', to: 'security' },
-  { from: 'bus', to: 'monitoring' },
-  { from: 'core', to: 'monitoring' },
-  { from: 'core', to: 'docs' },
-  { from: 'bus', to: 'candidate', dashed: true },
+/**
+ * Связи конфигурации. Ортогональная трассировка, как на монтажной схеме:
+ * A — дуга-«перемычка» там, где трасса перешагивает чужую линию.
+ * Связь с модулем-кандидатом — пунктир: физически ещё не замкнута.
+ */
+const EDGES: Array<{ from: ServiceId; to: ServiceId; d: string; a: [number, number]; b: [number, number]; dashed?: boolean }> = [
+  { from: 'channels', to: 'gateway', d: 'M 260 115 H 314 A 6 6 0 0 1 326 115 H 340', a: [260, 115], b: [340, 115] },
+  { from: 'gateway', to: 'bus', d: 'M 510 115 H 590', a: [510, 115], b: [590, 115] },
+  { from: 'bus', to: 'core', d: 'M 620 60 V 35 H 320 V 235 H 425 V 250', a: [620, 60], b: [425, 250] },
+  { from: 'bus', to: 'payments', d: 'M 740 170 V 250', a: [740, 170], b: [740, 250] },
+  { from: 'core', to: 'payments', d: 'M 510 305 H 554 A 6 6 0 0 1 566 305 H 590', a: [510, 305], b: [590, 305] },
+  { from: 'core', to: 'dwh', d: 'M 470 360 V 415 H 554 A 6 6 0 0 1 566 415 H 900 V 360', a: [470, 360], b: [900, 360] },
+  { from: 'payments', to: 'dwh', d: 'M 760 305 H 840', a: [760, 305], b: [840, 305] },
+  { from: 'core', to: 'aml', d: 'M 340 305 H 300 V 495 H 260', a: [340, 305], b: [260, 495] },
+  { from: 'bus', to: 'security', d: 'M 590 115 H 560 V 495 H 510', a: [590, 115], b: [510, 495] },
+  { from: 'bus', to: 'monitoring', d: 'M 760 95 H 965 V 425 H 675 V 440', a: [760, 95], b: [675, 440] },
+  { from: 'core', to: 'monitoring', d: 'M 510 340 H 530 V 430 H 554 A 6 6 0 0 1 566 430 H 640 V 440', a: [510, 340], b: [640, 440] },
+  { from: 'bus', to: 'candidate', d: 'M 760 140 H 975 V 640 H 760', a: [760, 140], b: [760, 640], dashed: true },
 ]
-
-function center(n: MapNode) {
-  return { x: n.x + n.w / 2, y: n.y + n.h / 2 }
-}
 
 interface SystemMapProps {
   activeNode: ServiceId | null
@@ -66,6 +64,8 @@ interface SystemMapProps {
   hoveredSkill: SkillId | null
   hoveredProject: ProjectId | null
 }
+
+const HATCHED_LAYERS: ServiceLayer[] = ['front', 'bus', 'core', 'data', 'ops']
 
 export default function SystemMap({
   activeNode,
@@ -91,17 +91,46 @@ export default function SystemMap({
 
   return (
     <div className="map-wrap">
+      <div className="map-chrome">
+        <span>КОНТУР АБС · СХЕМА ПОДКЛЮЧЕНИЙ</span>
+        <span className="map-chrome__mode">
+          <i className="map-chrome__led" aria-hidden="true" />
+          режим: реальное время
+        </span>
+      </div>
+
       <svg
         className="map-svg"
         viewBox="0 0 1000 700"
         role="img"
         aria-label="Карта автоматизированной банковской системы"
       >
+        <defs>
+          {/* Штриховка слоёв — как на чертеже: у каждого слоя свой тип заполнения */}
+          <pattern id="hatch-front" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" className="hatch hatch--front" />
+          </pattern>
+          <pattern id="hatch-bus" width="6" height="6" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="3" x2="6" y2="3" className="hatch hatch--bus" />
+          </pattern>
+          <pattern id="hatch-core" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" className="hatch hatch--core" />
+            <line x1="0" y1="3" x2="6" y2="3" className="hatch hatch--core" />
+          </pattern>
+          <pattern id="hatch-data" width="6" height="6" patternUnits="userSpaceOnUse">
+            <line x1="3" y1="0" x2="3" y2="6" className="hatch hatch--data" />
+          </pattern>
+          <pattern id="hatch-ops" width="7" height="7" patternUnits="userSpaceOnUse">
+            <circle cx="3.5" cy="3.5" r="1.1" className="hatch hatch--ops" fill="none" />
+          </pattern>
+          <pattern id="hatch-candidate" width="8" height="8" patternUnits="userSpaceOnUse">
+            <circle cx="4" cy="4" r="1.3" className="hatch hatch--candidate" fill="none" />
+          </pattern>
+        </defs>
+
         {/* Связи — под узлами */}
         <g className="map-edges">
           {EDGES.map((e, i) => {
-            const a = center(nodeById.get(e.from)!)
-            const b = center(nodeById.get(e.to)!)
             const cls = [
               'map-edge',
               e.dashed ? 'map-edge--dashed' : '',
@@ -111,15 +140,12 @@ export default function SystemMap({
               .filter(Boolean)
               .join(' ')
             return (
-              <line
-                key={i}
-                className={cls}
-                x1={a.x}
-                y1={a.y}
-                x2={b.x}
-                y2={b.y}
-                strokeDasharray={e.dashed ? '6 5' : undefined}
-              />
+              <g key={i} className={cls}>
+                <path className="map-edge__line" d={e.d} fill="none" strokeDasharray={e.dashed ? '7 5' : undefined} />
+                {/* пины подключения */}
+                <rect className="map-edge__pin" x={e.a[0] - 3} y={e.a[1] - 3} width={6} height={6} />
+                <rect className="map-edge__pin" x={e.b[0] - 3} y={e.b[1] - 3} width={6} height={6} />
+              </g>
             )
           })}
         </g>
@@ -134,11 +160,11 @@ export default function SystemMap({
           ]
             .filter(Boolean)
             .join(' ')
-          const color = LAYER_COLORS[n.layer]
           return (
             <g
               key={n.id}
               className={cls}
+              data-layer={n.layer}
               onClick={() => onActivate(n.id)}
               onKeyDown={(ev) => {
                 if (ev.key === 'Enter' || ev.key === ' ') {
@@ -150,13 +176,13 @@ export default function SystemMap({
               role="button"
               aria-label={`${n.short}: открыть карточку узла`}
             >
-              <rect className="map-node__body" x={n.x} y={n.y} width={n.w} height={n.h} rx={10} />
-              <rect className="map-node__stripe" x={n.x} y={n.y} width={4} height={n.h} rx={2} fill={color} />
-              <circle className="map-node__dot" cx={n.x + 16} cy={n.y + 20} r={4} />
+              <rect className="map-node__body" x={n.x} y={n.y} width={n.w} height={n.h} />
+              <rect className="map-node__stripe" x={n.x} y={n.y} width={4} height={n.h} />
+              <rect className="map-node__dot" x={n.x + 14} y={n.y + 16} width={6} height={6} />
               <text className="map-node__name" x={n.x + 28} y={n.y + 24}>
                 {n.short}
               </text>
-              <text className="map-node__layer" x={n.x + 16} y={n.y + n.h - 14}>
+              <text className="map-node__layer" x={n.x + 14} y={n.y + n.h - 12}>
                 {n.dashed ? 'МОДУЛЬ: НЕ ПОДКЛЮЧЁН' : n.layer.toUpperCase()}
               </text>
             </g>
@@ -165,18 +191,10 @@ export default function SystemMap({
       </svg>
 
       <div className="map-legend">
-        {Object.entries(LAYER_COLORS).map(([layer, color]) => (
+        {HATCHED_LAYERS.map((layer) => (
           <span key={layer} className="map-legend__item">
-            <span className="map-legend__swatch" style={{ background: color }} />
-            {
-              {
-                front: 'каналы',
-                bus: 'интеграция',
-                core: 'ядро',
-                data: 'данные',
-                ops: 'эксплуатация',
-              }[layer as ServiceLayer]
-            }
+            <span className={`map-legend__swatch map-legend__swatch--${layer}`} aria-hidden="true" />
+            {LEGEND_LABELS[layer]}
           </span>
         ))}
         <span className="map-legend__item map-legend__note">
