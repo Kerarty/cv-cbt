@@ -1,0 +1,37 @@
+/* Дизайн-токены АБС: тёмная банковская тема, нулевые внешние зависимости. */
+
+:root {
+  color-scheme: dark;
+
+  /* Фоны */
+  --bg-0: #070b14;
+  --bg-1: #0b1220;
+  --bg-2: #101a2e;
+  --bg-3: #16223a;
+
+  /* Обводки */
+  --stroke-1: #1b2740;
+  --stroke-2: #2a3a5c;
+
+  /* Текст */
+  --text-1: #d9e3f5;
+  --text-2: #8fa0bf;
+  --text-3: #5d6e90;
+
+  /* Акценты */
+  --accent: #3d7fff;
+  --accent-dim: #1e3a6e;
+  --accent-glow: rgba(61, 127, 255, 0.16);
+  --amber: #f0b429;
+  --amber-glow: rgba(240, 180, 41, 0.14);
+  --green: #34d399;
+  --red: #f87171;
+  --cyan: #38bdf8;
+
+  /* Шрифты */
+  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace;
+  --sans: Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  --radius: 8px;
+  --radius-lg: 12px;
+}
