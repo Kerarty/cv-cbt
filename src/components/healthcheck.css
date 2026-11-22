@@ -1,0 +1,90 @@
+/* Диагностика конфигурации: построчный healthcheck в стиле системного лога. */
+
+.hcheck {
+  margin-top: 16px;
+  border: 1px solid var(--stroke-1);
+  border-radius: var(--radius-lg);
+  background: var(--bg-1);
+  padding: 16px 18px;
+}
+
+.hcheck__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.hcheck__verdict {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--amber);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.hcheck__output {
+  margin-top: 14px;
+  border-top: 1px solid var(--stroke-1);
+  padding-top: 12px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.8;
+}
+
+.hcheck__line {
+  margin: 0;
+  color: var(--text-2);
+  animation: line-in 0.18s ease-out;
+}
+
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hcheck__line,
+  .hcheck__verdict {
+    animation: none;
+  }
+}
+
+.hcheck__mark {
+  margin-right: 10px;
+  color: var(--text-3);
+}
+
+.hcheck__line--ok {
+  color: var(--text-2);
+}
+
+.hcheck__line--ok .hcheck__mark {
+  color: var(--green);
+}
+
+.hcheck__line--fail {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.hcheck__line--fail .hcheck__mark {
+  color: var(--red);
+}
+
+.hcheck__line--info {
+  color: var(--text-1);
+}
+
+.hcheck__cta {
+  margin-top: 14px;
+}
+
+.hcheck__cta[aria-hidden] {
+  display: none;
+}

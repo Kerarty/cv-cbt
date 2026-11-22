@@ -6,6 +6,9 @@ import SystemMap from './components/SystemMap'
 import NodePanel from './components/NodePanel'
 import SkillMatrix from './components/SkillMatrix'
 import Registry from './components/Registry'
+import OpLog from './components/OpLog'
+import Healthcheck from './components/Healthcheck'
+import Cta from './components/Cta'
 import type { ServiceId } from './data/services'
 import type { SkillId } from './data/skills'
 import type { ProjectId } from './data/projects'
@@ -36,6 +39,7 @@ function App() {
             hoveredSkill={hoveredSkill}
             hoveredProject={hoveredProject}
           />
+          <Healthcheck />
         </Section>
 
         <Section
@@ -62,16 +66,16 @@ function App() {
           title="Журнал операций"
           hint="Хронология в формате op-log: инициализация, сборки, релизы, заявка на подключение."
         >
-          <div className="placeholder">[ ЭТАП 07 ] ЖУРНАЛ ОПЕРАЦИЙ — В РАЗРАБОТКЕ</div>
+          <OpLog />
         </Section>
 
         <Section
           id="connect"
           no="05"
           title="Заявка на подключение"
-          hint="Healthcheck рекомендует закрыть незамкнутую зависимость. Контакты модуля — ниже."
+          hint="Healthcheck рекомендует закрыть незамкнутую зависимость: модуль подключается одним собеседованием."
         >
-          <div className="placeholder">[ ЭТАП 07 ] CTA + КОНТАКТЫ — В РАЗРАБОТКЕ</div>
+          <Cta />
         </Section>
 
         <footer className="footer">
