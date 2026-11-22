@@ -1,0 +1,152 @@
+/* Карта АБС: SVG-схема с узлами и связями. */
+
+.map-wrap {
+  background: var(--bg-1);
+  border: 1px solid var(--stroke-1);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+}
+
+.map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.map-edges line {
+  stroke: var(--stroke-2);
+  stroke-width: 1.6;
+  transition:
+    stroke 0.2s,
+    opacity 0.2s;
+}
+
+.map-edge--dashed {
+  stroke: var(--amber);
+  stroke-dasharray: 6 5;
+  opacity: 0.75;
+}
+
+.map-edge.is-hot {
+  stroke: var(--accent);
+  stroke-width: 2.4;
+}
+
+.map-edge.is-dim {
+  opacity: 0.16;
+}
+
+.map-node {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.2s;
+}
+
+.map-node__body {
+  fill: var(--bg-2);
+  stroke: var(--stroke-2);
+  stroke-width: 1.4;
+  transition:
+    stroke 0.2s,
+    filter 0.2s,
+    fill 0.2s;
+}
+
+.map-node:hover .map-node__body {
+  stroke: var(--accent);
+  fill: var(--bg-3);
+}
+
+.map-node:focus-visible .map-node__body {
+  stroke: var(--cyan);
+  stroke-width: 2;
+}
+
+.map-node.is-active .map-node__body {
+  stroke: var(--accent);
+  stroke-width: 2.2;
+  filter: drop-shadow(0 0 10px var(--accent-glow));
+}
+
+.map-node.is-dim {
+  opacity: 0.28;
+}
+
+.map-node--candidate .map-node__body {
+  stroke: var(--amber);
+  stroke-dasharray: 7 5;
+  fill: rgba(240, 180, 41, 0.05);
+}
+
+.map-node--candidate:hover .map-node__body,
+.map-node--candidate.is-active .map-node__body {
+  stroke: var(--amber);
+  filter: drop-shadow(0 0 10px var(--amber-glow));
+}
+
+.map-node__dot {
+  fill: var(--green);
+}
+
+.map-node--candidate .map-node__dot {
+  fill: var(--amber);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.map-node__name {
+  fill: var(--text-1);
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.map-node--candidate .map-node__name {
+  fill: var(--amber);
+}
+
+.map-node__layer {
+  fill: var(--text-3);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.map-node--candidate .map-node__layer {
+  fill: var(--amber);
+  opacity: 0.85;
+}
+
+/* Легенда */
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 12px 8px 4px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+
+.map-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.map-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.map-legend__note {
+  color: var(--amber);
+  opacity: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-node--candidate .map-node__dot {
+    animation: none;
+  }
+}

@@ -1,12 +1,22 @@
+import { useState } from 'react'
 import StatusBar from './components/StatusBar'
 import Hero from './components/Hero'
 import Section from './components/Section'
+import SystemMap from './components/SystemMap'
+import NodePanel from './components/NodePanel'
+import type { ServiceId } from './data/services'
+import type { SkillId } from './data/skills'
 import { candidate } from './data/candidate'
 
 function App() {
+  const [activeNode, setActiveNode] = useState<ServiceId | null>(null)
+  const [hoveredSkill, setHoveredSkill] = useState<SkillId | null>(null)
+
   return (
     <>
       <StatusBar />
+      <NodePanel nodeId={activeNode} onClose={() => setActiveNode(null)} onHoverSkill={setHoveredSkill} />
+
       <main className="wrap">
         <Hero />
 
@@ -14,16 +24,16 @@ function App() {
           id="map"
           no="01"
           title="Конфигурация системы"
-          hint="Клик по узлу — зона ответственности и чем её закрывает кандидат. Карта живая: связи, статусы, диагностические метки."
+          hint="Клик по узлу — зона ответственности и чем её закрывает кандидат. Пунктирный узел внизу — незадействованный модуль."
         >
-          <div className="placeholder">[ ЭТАП 04 ] SVG-карта АБС — в разработке</div>
+          <SystemMap activeNode={activeNode} onActivate={setActiveNode} hoveredSkill={hoveredSkill} />
         </Section>
 
         <Section
           id="skills"
           no="02"
           title="Матрица соответствия"
-          hint="Требование вакансии → честный уровень → доказательство. Наведите на навык — подсветятся узлы системы, где он применяется."
+          hint="Требование вакансии → честный уровень → доказательство. Наведите на навык — узлы карты подсветятся."
         >
           <div className="placeholder">[ ЭТАП 06 ] МАТРИЦА НАВЫКОВ — В РАЗРАБОТКЕ</div>
         </Section>
