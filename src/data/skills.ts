@@ -4,6 +4,7 @@
  */
 
 import type { ServiceId } from './services'
+import type { ProjectId } from './projects'
 
 export type SkillId =
   | 'csharp'
@@ -26,7 +27,7 @@ export interface Skill {
   /** Строка-обоснование уровня */
   evidence: string
   /** Кодовые имена проектов (см. projects.ts) */
-  projects: string[]
+  projects: ProjectId[]
   /** Узлы АБС, где навык применяется */
   services: ServiceId[]
 }
